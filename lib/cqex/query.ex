@@ -44,7 +44,7 @@ defmodule CQEx.Query do
       value_encode_handler: value_encode_handler
     )
   end
-  def convert(q) when Record.is_record(q, cql_query) do
+  def convert(q) when Record.is_record(q, :cql_query) do
     [{:__struct__, CQEx.Query} | cql_query(q)] |> Enum.into(%{})
   end
   def convert(res), do: res
