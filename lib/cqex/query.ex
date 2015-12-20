@@ -12,7 +12,7 @@ defmodule CQEx.Query do
     serial_consistency: nil,
     value_encode_handler: nil
 
-  import CQEx
+  import CQEx, only: :macros
   import CQEx.Helpers
   require Record
 
@@ -32,7 +32,7 @@ defmodule CQEx.Query do
     :serial_consistency => serial_consistency,
     :value_encode_handler => value_encode_handler
     }) do
-    CQEx.cql_query(
+    cql_query(
       statement: statement,
       values: values,
       reusable: reusable,
@@ -44,8 +44,8 @@ defmodule CQEx.Query do
       value_encode_handler: value_encode_handler
     )
   end
-  def convert(q) when Record.is_record(q, CQEx.cql_query) do
-    [{:__struct__, CQEx.Query} | CQEx.cql_query(q)] |> Enum.into(%{})
+  def convert(q) when Record.is_record(q, cql_query) do
+    [{:__struct__, CQEx.Query} | cql_query(q)] |> Enum.into(%{})
   end
   def convert(res), do: res
 
@@ -63,6 +63,7 @@ defmodule CQEx.Query do
   def cast(c, q) do
     client = CQEx.Client.get c
     current = self()
+
     spawn_link fn ->
       tag = case q do
         %CQEx.Query{} ->

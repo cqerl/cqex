@@ -35,11 +35,11 @@ defmodule CQEx.Result do
 
   defbang fetch_more(a)
 
-  def convert(r, _client) when Record.is_record(r, :cql_result) do
+  def convert(r, _client) when Record.is_record(r, cql_result) do
     %Result{record: r}
   end
-  def convert(q, client) when Record.is_record(q, :cql_schema_changed) do
-    props = [{:__struct__, CQEx.Result.SchemaChanged}, {:client, client}] ++ CQEx.cql_schema_changed(q)
+  def convert(q, client) when Record.is_record(q, cql_schema_changed) do
+    props = [{:__struct__, CQEx.Result.SchemaChanged}, {:client, client}] ++ cql_schema_changed(q)
     Enum.into props, %{}
   end
   def convert(:void, client), do: %Result.Empty{client: client}
