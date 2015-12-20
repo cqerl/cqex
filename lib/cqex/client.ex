@@ -9,7 +9,9 @@ defmodule CQEx.Client do
   defdelegate new(a),          to: :cqerl, as: :new_client
   defdelegate new(a, b),       to: :cqerl, as: :new_client
 
-  defdelegate close(a),        to: :cqerl, as: :close_client
+  defdelegate _close(a),       to: :cqerl, as: :close_client
+
+  def close(client), do: client |> CQEx.Client.get |> _close
 
   defbang new
   defbang new(a)
