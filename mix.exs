@@ -32,7 +32,7 @@ defmodule CQEx.Mixfile do
 
   defp package do
     [files: ["lib", "mix.exs", "README.md", "LICENSE"],
-     contributors: ["Mathieu D'Amours"],
+     maintainers: ["Mathieu D'Amours"],
      licenses: ["MIT"],
      links: %{"GitHub" => "https://github.com/matehat/cqex"}]
   end
