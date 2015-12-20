@@ -39,8 +39,11 @@ defmodule CQEx.Result do
 
   def next(%Result{record: rec}), do: next rec
   def next(rec) do
-    {head, tail} = _next rec
-    {head, %Result{record: tail}}
+    case _next(rec) do
+      {head, tail} ->
+        {head, %Result{record: tail}}
+      empty_dataset -> empty_dataset
+    end
   end
 
   def all_rows(%Result{record: rec}, Opts), do: _all_rows rec, Opts
@@ -54,7 +57,8 @@ defmodule CQEx.Result do
 
   def fetch_more(%Result{record: rec}), do: fetch_more rec
   def fetch_more(rec) do
-    %Result{record: _fetch_more rec}
+    {:ok, rec} = _fetch_more rec
+    {:ok, %Result{record: rec}}
   end
 
   def fetch_more_async(%Result{record: rec}), do: _fetch_more_async rec
@@ -80,10 +84,20 @@ defmodule CQEx.Result do
     end
     def reduce(result,  {:cont, acc}, fun) do
       case R.size(result) do
-        0 -> {:done, acc};
+        0 ->
+          case R.has_more_pages(result) do
+            true ->
+              next_page = result |> R.fetch_more!
+              case R.next(next_page) do
+                {h, t} -> reduce t, fun.(h, acc), fun
+                :empty_dataset -> {:done, acc}
+              end
+            false ->
+              {:done, acc}
+          end
         n ->
           {h, t} = R.next result
-          reduce(t, fun.(h, acc), fun)
+          reduce t, fun.(h, acc), fun
       end
     end
 
