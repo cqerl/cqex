@@ -17,6 +17,21 @@ defmodule CQEx.Result do
   defdelegate _fetch_more(a),         to: :cqerl, as: :fetch_more
   defdelegate _fetch_more_async(a),   to: :cqerl, as: :fetch_more_async
 
+  defmodule SchemaChanged do
+    defstruct [
+      change_type: nil,
+      target: nil,
+      keyspace: nil,
+      name: nil,
+      args: nil,
+      client: nil
+    ]
+  end
+
+  defmodule Empty do
+    defstruct [client: nil]
+  end
+
   defbang fetch_more(a)
 
   def convert(r) when Record.is_record(r, :cql_result) do
