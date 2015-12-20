@@ -47,23 +47,41 @@ defmodule CQEx.Query do
   def convert(q) when Record.is_record(q, CQEx.cql_query) do
     [{:__struct__, CQEx.Query} | CQEx.cql_query(q)] |> Enum.into(%{})
   end
+  def convert(res), do: res
 
   def call(c, q) do
+    client = CQEx.Client.get c
     {:ok, result} = case q do
       %CQEx.Query{} ->
-        _call c, convert q
+        _call client, convert q
       any ->
-        _call c, any
+        _call client, any
     end
-    {:ok, CQEx.Result.convert result}
+    {:ok, CQEx.Result.convert(result, client)}
   end
 
   def cast(c, q) do
-    case q do
-      %CQEx.Query{} ->
-        _cast c, convert q
-      any ->
-        _cast c, any
+    client = CQEx.Client.get c
+    current = self()
+    spawn_link fn ->
+      tag = case q do
+        %CQEx.Query{} ->
+          _cast client, convert q
+        any ->
+          _cast client, any
+      end
+      send current, {:tag, tag}
+
+      receive do
+        {:result, ^tag, result} ->
+          send current, {:result, tag, CQEx.Result.convert(result, client)}
+        any ->
+          send current, any
+      end
+    end
+
+    receive do
+      {:tag, tag} -> tag
     end
   end
 end

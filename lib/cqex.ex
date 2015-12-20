@@ -3,9 +3,10 @@ defmodule CQEx do
 
   records = Record.extract_all(from_lib: "cqerl/include/cqerl.hrl")
 
-  Record.defrecord :cql_query,        Dict.get(records, :cql_query)
-  Record.defrecord :cql_query_batch,  Dict.get(records, :cql_query_batch)
-  Record.defrecord :cql_result,       Dict.get(records, :cql_result)
+  Record.defrecord :cql_query,          Dict.get(records, :cql_query)
+  Record.defrecord :cql_query_batch,    Dict.get(records, :cql_query_batch)
+  Record.defrecord :cql_schema_changed, Dict.get(records, :cql_schema_changed)
+  Record.defrecord :cql_result,         Dict.get(records, :cql_result)
 
   defmodule Error, do: defstruct([msg: nil, acc: []])
 
