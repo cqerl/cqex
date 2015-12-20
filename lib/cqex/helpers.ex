@@ -1,4 +1,12 @@
 defmodule CQEx.Helpers do
+
+  @moduledoc "Helper macros"
+  defmacro __using__(_opts) do
+    quote do
+      import Mongo.Helpers
+    end
+  end
+
   @doc """
   Helps defining a function like `new!` calling function `new`
 
