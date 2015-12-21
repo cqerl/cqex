@@ -5,18 +5,9 @@ defmodule CQEx.Result do
   require Record
 
   defstruct record: nil
-  alias CQEx.Result, as: Result
 
-  defdelegate _size(a),               to: :cqerl, as: :size
-  defdelegate _head(a),               to: :cqerl, as: :head
-  defdelegate _head(a, b),            to: :cqerl, as: :head
-  defdelegate _tail(a),               to: :cqerl, as: :tail
-  defdelegate _next(a),               to: :cqerl, as: :next
-  defdelegate _all_rows(a),           to: :cqerl, as: :all_rows
-  defdelegate _all_rows(a, b),        to: :cqerl, as: :all_rows
-  defdelegate _has_more_pages(a),     to: :cqerl, as: :has_more_pages
-  defdelegate _fetch_more(a),         to: :cqerl, as: :fetch_more
-  defdelegate _fetch_more_async(a),   to: :cqerl, as: :fetch_more_async
+  alias CQEx.Result, as: Result
+  alias :cqerl, as: CQErl
 
   defmodule SchemaChanged do
     defstruct [
@@ -44,46 +35,46 @@ defmodule CQEx.Result do
   end
   def convert(:void, client), do: %Result.Empty{client: client}
 
-  def size(%Result{record: rec}), do: _size rec
-  def size(rec), do: _size rec
+  def size(%Result{record: rec}), do: CQErl.size rec
+  def size(rec), do: CQErl.size rec
 
-  def head(%Result{record: rec}), do: _head rec
-  def head(rec), do: _head rec
+  def head(%Result{record: rec}), do: CQErl.head rec
+  def head(rec), do: CQErl.head rec
 
-  def head(%Result{record: rec}, Opts), do: _head rec, Opts
-  def head(rec, Opts), do: _head rec, Opts
+  def head(%Result{record: rec}, Opts), do: CQErl.head rec, Opts
+  def head(rec, Opts), do: CQErl.head rec, Opts
 
   def tail(%Result{record: rec}), do: tail rec
   def tail(rec) do
-    %Result{record: _tail rec}
+    %Result{record: CQErl.tail rec}
   end
 
   def next(%Result{record: rec}), do: next rec
   def next(rec) do
-    case _next(rec) do
+    case CQErl.next(rec) do
       {head, tail} ->
         {head, %Result{record: tail}}
       empty_dataset -> empty_dataset
     end
   end
 
-  def all_rows(%Result{record: rec}, Opts), do: _all_rows rec, Opts
-  def all_rows(rec, Opts), do: _all_rows rec, Opts
+  def all_rows(%Result{record: rec}, Opts), do: CQErl.all_rows rec, Opts
+  def all_rows(rec, Opts), do: CQErl.all_rows rec, Opts
 
-  def all_rows(%Result{record: rec}), do: _all_rows rec
-  def all_rows(rec), do: _all_rows rec
+  def all_rows(%Result{record: rec}), do: CQErl.all_rows rec
+  def all_rows(rec), do: CQErl.all_rows rec
 
-  def has_more_pages(%Result{record: rec}), do: _has_more_pages rec
-  def has_more_pages(rec), do: _has_more_pages rec
+  def has_more_pages(%Result{record: rec}), do: CQErl.has_more_pages rec
+  def has_more_pages(rec), do: CQErl.has_more_pages rec
 
   def fetch_more(%Result{record: rec}), do: fetch_more rec
   def fetch_more(rec) do
-    {:ok, rec} = _fetch_more rec
+    {:ok, rec} = CQErl.fetch_more rec
     {:ok, %Result{record: rec}}
   end
 
-  def fetch_more_async(%Result{record: rec}), do: _fetch_more_async rec
-  def fetch_more_async(rec), do: _fetch_more_async rec
+  def fetch_more_async(%Result{record: rec}), do: CQErl.fetch_more_async rec
+  def fetch_more_async(rec), do: CQErl.fetch_more_async rec
 
   defimpl Enumerable do
     alias CQEx.Result, as: R
@@ -116,14 +107,14 @@ defmodule CQEx.Result do
             false ->
               {:done, acc}
           end
-        n ->
+        _n ->
           {h, t} = R.next result
           reduce t, fun.(h, acc), fun
       end
     end
 
-    defp find(:empty_dataset, row), do: false
-    defp find({row, tail}, row), do: true
+    defp find(:empty_dataset, _row), do: false
+    defp find({row2, _tail}, row) when row == row2, do: true
     defp find({_, tail}, row) do
       member? tail, row
     end

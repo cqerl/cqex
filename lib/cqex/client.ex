@@ -2,16 +2,20 @@ defmodule CQEx.Client do
   import CQEx.Helpers
   import CQEx, only: :macros
 
-  defdelegate prepare(a),      to: :cqerl, as: :prepare_client
-  defdelegate prepare(a, b),   to: :cqerl, as: :prepare_client
+  alias :cqerl, as: CQErl
 
-  defdelegate new,             to: :cqerl, as: :new_client
-  defdelegate new(a),          to: :cqerl, as: :new_client
-  defdelegate new(a, b),       to: :cqerl, as: :new_client
+  defdelegate prepare(a),      to: CQErl, as: :prepare_client
+  defdelegate prepare(a, b),   to: CQErl, as: :prepare_client
 
-  defdelegate _close(a),       to: :cqerl, as: :close_client
+  defdelegate new,             to: CQErl, as: :new_client
+  defdelegate new(a),          to: CQErl, as: :new_client
+  defdelegate new(a, b),       to: CQErl, as: :new_client
 
-  def close(client), do: client |> CQEx.Client.get |> _close
+  defdelegate _close(a),       to: CQErl, as: :close_client
+
+  def close(client) do 
+    client |> CQEx.Client.get |> CQErl.close
+  end
 
   defbang new
   defbang new(a)

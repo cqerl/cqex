@@ -1,4 +1,10 @@
 defmodule CQEx.Query do
+  require Record
+
+  import CQEx, only: :macros
+  import CQEx.Helpers
+
+  alias :cqerl, as: CQErl
 
   @default_consistency 1
 
@@ -11,15 +17,6 @@ defmodule CQEx.Query do
     consistency: @default_consistency,
     serial_consistency: nil,
     value_encode_handler: nil
-
-  import CQEx, only: :macros
-  import CQEx.Helpers
-  require Record
-
-  defdelegate _call(a, b),            to: :cqerl, as: :run_query
-  defdelegate _cast(a, b),            to: :cqerl, as: :send_query
-
-  defbang call(a, b)
 
   def convert(%CQEx.Query{
     :statement => statement,
@@ -53,12 +50,13 @@ defmodule CQEx.Query do
     client = CQEx.Client.get c
     {:ok, result} = case q do
       %CQEx.Query{} ->
-        _call client, convert q
+        CQErl.run_query client, convert q
       any ->
-        _call client, any
+        CQErl.run_query client, any
     end
     {:ok, CQEx.Result.convert(result, client)}
   end
+  defbang call(a, b)
 
   def cast(c, q) do
     client = CQEx.Client.get c
@@ -67,9 +65,9 @@ defmodule CQEx.Query do
     spawn_link fn ->
       tag = case q do
         %CQEx.Query{} ->
-          _cast client, convert q
+          CQErl.send_query client, convert q
         any ->
-          _cast client, any
+          CQErl.send_query client, any
       end
       send current, {:tag, tag}
 
