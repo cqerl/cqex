@@ -17,7 +17,7 @@ Modern Cassandra driver for Elixir
   # => [ list of users... ]
   ```
 
-- Chaining queries and using `Stream` and `Enum` to piece meal the result set.
+- Chaining queries and using `Stream` and `Enum` to get the result set in small pages.
 
   ```elixir
   base = %CQEx.Query{
