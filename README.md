@@ -1,5 +1,5 @@
 # cqex
-Modern Cassandra driver for Elixir
+Modern Cassandra driver for Elixir, using [cqerl][1] underneath.
 
 *Under development, not much documentation for now*
 
@@ -41,3 +41,5 @@ Modern Cassandra driver for Elixir
   ```elixir
   client |> CQEx.Client.close
   ```
+
+[1]: https://github.com/matehat/cqerl/
