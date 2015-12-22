@@ -25,16 +25,27 @@ base = %CQEx.Query{
   statement: "INSERT INTO animals (name, legs) values (?, ?);"
 }
 
-client
+animals_by_pair = client
 |> CQEx.Query.call!("CREATE TABLE animals (name text PRIMARY KEY, legs tinyint);")
 |> CQEx.Query.call!(%{ base | values: %{name: "cat", legs: 4} })
 |> CQEx.Query.call!(%{ base | values: %{name: "dog", legs: 4} })
 |> CQEx.Query.call!(%{ base | values: %{name: "bonobo", legs: 2} })
 |> CQEx.Query.call!("SELECT * FROM animals;")
 |> Stream.chunks(2)
-|> Enum.to_list
+
+animals_by_pair
+|> Enum.at(0)
 
 # => [ %{name: "cat", legs: 4}, %{name: "dog", legs: 4} ]
+
+animals_by_pair
+|> Enum.to_list
+
+# => [ 
+       [ %{name: "cat", legs: 4}, %{name: "dog", legs: 4} ], 
+       [ %{name: "bonobo", legs: 2} ] 
+     ]
+
 ```
 
 Close the client
