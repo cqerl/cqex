@@ -118,7 +118,7 @@ defmodule CQEx.Result do
         0 ->
           case result.auto_fetch_more do
             false -> {:done, acc}
-            true -> maybe_fetch_and_continue result
+            true -> maybe_fetch_and_continue result, acc, fun
           end
         
         _n ->
@@ -127,7 +127,7 @@ defmodule CQEx.Result do
       end
     end
 
-    defp maybe_fetch_and_continue(result) do
+    defp maybe_fetch_and_continue(result, acc, fun) do
       case R.has_more_pages(result) do
         true ->
           next_page = result |> R.fetch_more!
