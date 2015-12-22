@@ -23,6 +23,7 @@ defmodule CQEx.Client do
 
   def get(client={p, r}) when is_pid(p) and is_reference(r), do: client
   def get(%CQEx.Result{record: cql_result(client: client)}), do: client
+  def get(cql_result(client: client)), do: client
   def get(%CQEx.Result.SchemaChanged{client: client}), do: client
   def get(%CQEx.Result.Empty{client: client}), do: client
   def get(_), do: nil
