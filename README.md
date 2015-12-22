@@ -42,9 +42,9 @@ animals_by_pair
 |> Enum.to_list
 
 # => [ 
-       [ %{name: "cat", legs: 4}, %{name: "dog", legs: 4} ], 
-       [ %{name: "bonobo", legs: 2} ] 
-     ]
+#      [ %{name: "cat", legs: 4}, %{name: "dog", legs: 4} ], 
+#      [ %{name: "bonobo", legs: 2} ] 
+#    ]
 
 ```
 
