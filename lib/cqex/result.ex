@@ -73,8 +73,27 @@ defmodule CQEx.Result do
     {:ok, %Result{record: rec}}
   end
 
-  def fetch_more_async(%Result{record: rec}), do: CQErl.fetch_more_async rec
-  def fetch_more_async(rec), do: CQErl.fetch_more_async rec
+  def fetch_more_async(%Result{record: rec}), do: fetch_more_async rec
+  def fetch_more_async(result) do
+    client = CQEx.Client.get result
+    current = self()
+
+    spawn_link fn ->
+      tag = CQErl.fetch_more_async result
+      send current, {:tag, tag}
+
+      receive do
+        {:result, ^tag, result} ->
+          send current, {:result, tag, CQEx.Result.convert(result, nil)}
+        any ->
+          send current, any
+      end
+    end
+
+    receive do
+      {:tag, tag} -> tag
+    end
+  end
 
   defimpl Enumerable do
     alias CQEx.Result, as: R
