@@ -22,14 +22,14 @@ Chain queries and using `Stream` and `Enum` to get the result set in small pages
 
 ```elixir
 base = %CQEx.Query{
-  statement: "INSERT INTO animals (name, legs) values (?, ?);"
+  statement: "INSERT INTO animals (name, legs, friendly) values (?, ?, ?);"
 }
 
 animals_by_pair = client
-|> CQEx.Query.call!("CREATE TABLE animals (name text PRIMARY KEY, legs tinyint);")
-|> CQEx.Query.call!(%{ base | values: %{name: "cat", legs: 4} })
-|> CQEx.Query.call!(%{ base | values: %{name: "dog", legs: 4} })
-|> CQEx.Query.call!(%{ base | values: %{name: "bonobo", legs: 2} })
+|> CQEx.Query.call!("CREATE TABLE animals (name text PRIMARY KEY, legs tinyint, friendly bool);")
+|> CQEx.Query.call!(%{ base | values: %{name: "cat", legs: 4, friendly: false} })
+|> CQEx.Query.call!(%{ base | values: %{name: "dog", legs: 4, friendly: true} })
+|> CQEx.Query.call!(%{ base | values: %{name: "bonobo", legs: 2, friendly: true} })
 |> CQEx.Query.call!("SELECT * FROM animals;")
 |> Stream.chunks(2)
 
@@ -46,6 +46,17 @@ animals_by_pair
 #      [ %{name: "bonobo", legs: 2} ] 
 #    ]
 
+```
+
+Use comprehensions on the results of a CQL query
+
+```elixir
+for 
+  %{ legs: leg_count, name: name, friendly: true } <- CQEx.Query.call!(client, "SELECT * FROM animals"), 
+  leg_count == 4,
+  do: "#{name} has four legs"
+|>
+# => [ "cat has four legs" ]
 ```
 
 Close the client
