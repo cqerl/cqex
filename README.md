@@ -26,7 +26,7 @@ base = %CQEx.Query{
 }
 
 animals_by_pair = client
-|> CQEx.Query.call!("CREATE TABLE animals (name text PRIMARY KEY, legs tinyint, friendly bool);")
+|> CQEx.Query.call!("CREATE TABLE animals (name text PRIMARY KEY, legs tinyint, friendly boolean);")
 |> CQEx.Query.call!(%{ base | values: %{name: "cat", legs: 4, friendly: false} })
 |> CQEx.Query.call!(%{ base | values: %{name: "dog", legs: 4, friendly: true} })
 |> CQEx.Query.call!(%{ base | values: %{name: "bonobo", legs: 2, friendly: true} })
