@@ -4,7 +4,7 @@ defmodule CQEx.Result do
 
   require Record
 
-  defstruct record: nil
+  defstruct [ record: nil, auto_fetch_more: true ]
 
   alias CQEx.Result, as: Result
   alias :cqerl, as: CQErl
@@ -116,19 +116,27 @@ defmodule CQEx.Result do
     def reduce(result,  {:cont, acc}, fun) do
       case R.size(result) do
         0 ->
-          case R.has_more_pages(result) do
-            true ->
-              next_page = result |> R.fetch_more!
-              case R.next(next_page) do
-                {h, t} -> reduce t, fun.(h, acc), fun
-                :empty_dataset -> {:done, acc}
-              end
-            false ->
-              {:done, acc}
+          case result.auto_fetch_more do
+            false -> {:done, acc}
+            true -> maybe_fetch_and_continue result
           end
+        
         _n ->
           {h, t} = R.next result
           reduce t, fun.(h, acc), fun
+      end
+    end
+
+    defp maybe_fetch_and_continue(result) do
+      case R.has_more_pages(result) do
+        true ->
+          next_page = result |> R.fetch_more!
+          case R.next(next_page) do
+            {h, t} -> reduce t, fun.(h, acc), fun
+            :empty_dataset -> {:done, acc}
+          end
+        false ->
+          {:done, acc}
       end
     end
 
