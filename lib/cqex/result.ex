@@ -64,8 +64,8 @@ defmodule CQEx.Result do
   def all_rows(%Result{record: rec}), do: CQErl.all_rows rec
   def all_rows(rec), do: CQErl.all_rows rec
 
-  def has_more_pages(%Result{record: rec}), do: CQErl.has_more_pages rec
-  def has_more_pages(rec), do: CQErl.has_more_pages rec
+  def has_more_pages?(%Result{record: rec}), do: CQErl.has_more_pages rec
+  def has_more_pages?(rec), do: CQErl.has_more_pages rec
 
   def fetch_more(%Result{record: rec}), do: fetch_more rec
   def fetch_more(rec) do
@@ -120,7 +120,7 @@ defmodule CQEx.Result do
             false -> {:done, acc}
             true -> maybe_fetch_and_continue result, acc, fun
           end
-        
+
         _n ->
           {h, t} = R.next result
           reduce t, fun.(h, acc), fun
@@ -128,7 +128,7 @@ defmodule CQEx.Result do
     end
 
     defp maybe_fetch_and_continue(result, acc, fun) do
-      case R.has_more_pages(result) do
+      case R.has_more_pages?(result) do
         true ->
           next_page = result |> R.fetch_more!
           case R.next(next_page) do
