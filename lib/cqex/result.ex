@@ -41,8 +41,8 @@ defmodule CQEx.Result do
   def head(%Result{record: rec}), do: CQErl.head rec
   def head(rec), do: CQErl.head rec
 
-  def head(%Result{record: rec}, Opts), do: CQErl.head rec, Opts
-  def head(rec, Opts), do: CQErl.head rec, Opts
+  def head(%Result{record: rec}, Opts), do: nillify CQErl.head rec, Opts
+  def head(rec, Opts), do: nillify CQErl.head rec, Opts
 
   def tail(%Result{record: rec}), do: tail rec
   def tail(rec) do
@@ -53,16 +53,24 @@ defmodule CQEx.Result do
   def next(rec) do
     case CQErl.next(rec) do
       {head, tail} ->
-        {head, %Result{record: tail}}
+        {nillify(head), %Result{record: tail}}
       empty_dataset -> empty_dataset
     end
   end
 
-  def all_rows(%Result{record: rec}, Opts), do: CQErl.all_rows rec, Opts
-  def all_rows(rec, Opts), do: CQErl.all_rows rec, Opts
+  def all_rows(%Result{record: rec}, Opts) do
+    CQErl.all_rows(rec, Opts) |> Enum.map &(nillify(&1))
+  end
+  def all_rows(rec, Opts) do
+    CQErl.all_rows(rec, Opts) |> Enum.map &(nillify(&1))
+  end
 
-  def all_rows(%Result{record: rec}), do: CQErl.all_rows rec
-  def all_rows(rec), do: CQErl.all_rows rec
+  def all_rows(%Result{record: rec}) do
+    CQErl.all_rows(rec) |> Enum.map &(nillify(&1))
+  end
+  def all_rows(rec) do
+    CQErl.all_rows(rec) |> Enum.map &(nillify(&1))
+  end
 
   def has_more_pages?(%Result{record: rec}), do: CQErl.has_more_pages rec
   def has_more_pages?(rec), do: CQErl.has_more_pages rec
@@ -94,6 +102,31 @@ defmodule CQEx.Result do
       {:tag, tag} -> tag
     end
   end
+
+  defp nillify(rec) when is_map(rec) do
+    rec
+    |> Enum.map(fn
+      {key, :null} -> {key, nil};
+      {key, other} -> {key, nillify(other)}
+    end)
+    |> Enum.into %{}
+  end
+  defp nillify(list = [{key, value} | rest]) do
+    list
+    |> Enum.map fn
+      {key, :null} -> {key, nil};
+      {key, other} -> {key, nillify(other)}
+    end
+  end
+  defp nillify(list = [value | rest]) do
+    list
+    |> Enum.map fn
+      :null -> nil;
+      other -> other
+    end
+  end
+  defp nillify(:null), do: nil
+  defp nillify(other), do: other
 
   defimpl Enumerable do
     alias CQEx.Result, as: R

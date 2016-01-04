@@ -31,14 +31,14 @@ defmodule CQEx.Query do
     }) do
     cql_query(
       statement: statement,
-      values: values,
-      reusable: reusable,
-      named: named,
-      page_size: page_size,
-      page_state: page_state,
-      consistency: consistency,
-      serial_consistency: serial_consistency,
-      value_encode_handler: value_encode_handler
+      values: nullify(values, :undefined),
+      reusable: nullify(reusable, :undefined),
+      named: nullify(named, :undefined),
+      page_size: nullify(page_size, :undefined),
+      page_state: nullify(page_state, :undefined),
+      consistency: nullify(consistency, :undefined),
+      serial_consistency: nullify(serial_consistency, :undefined),
+      value_encode_handler: nullify(value_encode_handler, :undefined)
     )
   end
   def convert(q) when Record.is_record(q, :cql_query) do
@@ -83,4 +83,30 @@ defmodule CQEx.Query do
       {:tag, tag} -> tag
     end
   end
+
+  defp nullify(rec), do: nullify(rec, :null)
+  defp nullify(rec, fallback) when is_map(rec) do
+    rec
+    |> Enum.map(fn
+      {key, nil} -> {key, fallback};
+      {key, other} -> {key, nullify(other)}
+    end)
+    |> Enum.into %{}
+  end
+  defp nullify(list = [{key, value} | rest], fallback) do
+    list
+    |> Enum.map fn
+      {key, nil} -> {key, fallback};
+      {key, other} -> {key, nullify(other)}
+    end
+  end
+  defp nullify(list = [value | rest], fallback) do
+    list
+    |> Enum.map fn
+      nil -> fallback;
+      other -> other
+    end
+  end
+  defp nullify(nil, fallback), do: fallback
+  defp nullify(other, fallback), do: other
 end
