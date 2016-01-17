@@ -128,6 +128,13 @@ defmodule CQEx.Result do
   defp nillify(:null), do: nil
   defp nillify(other), do: other
 
+  def fetch(result, index) do
+    case Enum.at(result, index) do
+      nil -> :error;
+      row -> { :ok, row }
+    end
+  end
+
   defimpl Enumerable do
     alias CQEx.Result, as: R
 

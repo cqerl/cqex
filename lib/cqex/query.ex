@@ -91,22 +91,22 @@ defmodule CQEx.Query do
       {key, nil} -> {key, fallback};
       {key, other} -> {key, nullify(other)}
     end)
-    |> Enum.into %{}
+    |> Enum.into(%{})
   end
-  defp nullify(list = [{key, value} | rest], fallback) do
+  defp nullify(list = [{_key, _value} | _rest], fallback) do
     list
-    |> Enum.map fn
+    |> Enum.map(fn
       {key, nil} -> {key, fallback};
       {key, other} -> {key, nullify(other)}
-    end
+    end)
   end
-  defp nullify(list = [value | rest], fallback) do
+  defp nullify(list = [_value | _rest], fallback) do
     list
-    |> Enum.map fn
+    |> Enum.map(fn
       nil -> fallback;
       other -> other
-    end
+    end)
   end
   defp nullify(nil, fallback), do: fallback
-  defp nullify(other, fallback), do: other
+  defp nullify(other, _fallback), do: other
 end
