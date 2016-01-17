@@ -84,6 +84,39 @@ defmodule CQEx.Query do
     end
   end
 
+  def put(q = %CQEx.Query{ values: values }, key, value) do
+    values = values || []
+    %{ q | values: Dict.put(values, key, value) }
+  end
+  def get(%CQEx.Query{ values: values }, key, default \\ nil) do
+    Dict.get((values || []), key, default)
+  end
+  def delete(q = %CQEx.Query{ values: values }, key) do
+    values = values || []
+    %{ q | values: Dict.delete(values, key) }
+  end
+  def merge(q = %CQEx.Query{ values: values }, other) do
+    values = values || []
+    %{ q | values: Dict.merge(values, other) }
+  end
+
+  def new do
+    %CQEx.Query{}
+  end
+
+  def statement(q = %CQEx.Query{}, statement) do
+    %{ q | statement: statement }
+  end
+  def page_size(q = %CQEx.Query{}, page_size) when is_integer(page_size) do
+    %{ q | page_size: page_size }
+  end
+  def consistency(q = %CQEx.Query{}, consistency) do
+    %{ q | consistency: consistency }
+  end
+  def serial_consistency(q = %CQEx.Query{}, serial_consistency) do
+    %{ q | serial_consistency: serial_consistency }
+  end
+
   defp nullify(rec), do: nullify(rec, :null)
   defp nullify(rec, fallback) when is_map(rec) do
     rec
