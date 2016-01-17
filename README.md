@@ -38,11 +38,11 @@ base = %Q{
 |> Q.put(:friendly, true)
 
 animals_by_pair = client
-|> CQEx.Query.call!("CREATE TABLE IF NOT EXISTS animals (name text PRIMARY KEY, legs tinyint, friendly boolean);")
-|> CQEx.Query.call!( base |> Q.merge(%{ name: "cat", friendly: false }) )
-|> CQEx.Query.call!( base |> Q.put(:name, "dog") )
-|> CQEx.Query.call!( base |> Q.merge(%{ name: "bonobo", legs: 2 }) )
-|> CQEx.Query.call!("SELECT * FROM animals;")
+|> Q.call!("CREATE TABLE IF NOT EXISTS animals (name text PRIMARY KEY, legs tinyint, friendly boolean);")
+|> Q.call!( base |> Q.merge(%{ name: "cat", friendly: false }) )
+|> Q.call!( base |> Q.put(:name, "dog") )
+|> Q.call!( base |> Q.merge(%{ name: "bonobo", legs: 2 }) )
+|> Q.call!("SELECT * FROM animals;")
 |> Stream.chunk(2)
 
 animals_by_pair
@@ -63,7 +63,7 @@ animals_by_pair
 Use comprehensions on the results of a CQL query
 
 ```elixir
-for %{ legs: leg_count, name: name, friendly: true } <- CQEx.Query.call!(client, "SELECT * FROM animals"), 
+for %{ legs: leg_count, name: name, friendly: true } <- Q.call!(client, "SELECT * FROM animals"), 
   leg_count == 4,
   do: "#{name} has four legs"
   
