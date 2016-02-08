@@ -59,17 +59,17 @@ defmodule CQEx.Result do
   end
 
   def all_rows(%Result{record: rec}, Opts) do
-    CQErl.all_rows(rec, Opts) |> Enum.map &(nillify(&1))
+    CQErl.all_rows(rec, Opts) |> Enum.map(&(nillify(&1)))
   end
   def all_rows(rec, Opts) do
-    CQErl.all_rows(rec, Opts) |> Enum.map &(nillify(&1))
+    CQErl.all_rows(rec, Opts) |> Enum.map(&(nillify(&1)))
   end
 
   def all_rows(%Result{record: rec}) do
-    CQErl.all_rows(rec) |> Enum.map &(nillify(&1))
+    CQErl.all_rows(rec) |> Enum.map(&(nillify(&1)))
   end
   def all_rows(rec) do
-    CQErl.all_rows(rec) |> Enum.map &(nillify(&1))
+    CQErl.all_rows(rec) |> Enum.map(&(nillify(&1)))
   end
 
   def has_more_pages?(%Result{record: rec}), do: CQErl.has_more_pages rec
@@ -109,21 +109,21 @@ defmodule CQEx.Result do
       {key, :null} -> {key, nil};
       {key, other} -> {key, nillify(other)}
     end)
-    |> Enum.into %{}
+    |> Enum.into(%{})
   end
   defp nillify(list = [{key, value} | rest]) do
     list
-    |> Enum.map fn
+    |> Enum.map(fn
       {key, :null} -> {key, nil};
       {key, other} -> {key, nillify(other)}
-    end
+    end)
   end
   defp nillify(list = [value | rest]) do
     list
-    |> Enum.map fn
+    |> Enum.map(fn
       :null -> nil;
       other -> other
-    end
+    end)
   end
   defp nillify(:null), do: nil
   defp nillify(other), do: other
