@@ -83,7 +83,6 @@ defmodule CQEx.Result do
 
   def fetch_more_async(%Result{record: rec}), do: fetch_more_async rec
   def fetch_more_async(result) do
-    client = CQEx.Client.get result
     current = self()
 
     spawn_link fn ->
@@ -111,14 +110,14 @@ defmodule CQEx.Result do
     end)
     |> Enum.into(%{})
   end
-  defp nillify(list = [{key, value} | rest]) do
+  defp nillify(list = [{_key, _value} | _rest]) do
     list
     |> Enum.map(fn
       {key, :null} -> {key, nil};
       {key, other} -> {key, nillify(other)}
     end)
   end
-  defp nillify(list = [value | rest]) do
+  defp nillify(list = [_value | _rest]) do
     list
     |> Enum.map(fn
       :null -> nil;
