@@ -25,9 +25,14 @@ defmodule CQEx.Helpers do
         case unquote(name)(unquote_splicing(args)) do
           :ok -> :ok
           nil -> nil
-          { :ok, result } -> result
-          { :error, reason } -> raise CQEx.Error, msg: reason, acc: unquote(args)
-          %{msg: msg, acc: acc}=err -> raise CQEx.Error, msg: msg, acc: acc
+          { :ok, result } ->
+            result
+
+          { :error, reason } ->
+            raise CQEx.Error, msg: reason, acc: unquote(args)
+
+          %{msg: msg, acc: acc} = err ->
+            reraise CQEx.Error.exception(msg: msg, acc: acc), acc
         end
       end
     end

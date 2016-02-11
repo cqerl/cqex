@@ -48,13 +48,22 @@ defmodule CQEx.Query do
 
   def call(c, q) do
     client = CQEx.Client.get c
-    {:ok, result} = case q do
+    case q do
       %CQEx.Query{} ->
         CQErl.run_query client, convert q
       any ->
         CQErl.run_query client, any
     end
-    {:ok, CQEx.Result.convert(result, client)}
+    |> case do
+      {:ok, result} ->
+        {:ok, CQEx.Result.convert(result, client)};
+
+      {:error, {:error, {reason, stacktrace}}} ->
+        %{ msg: "CQErl processing error: #{reason}", acc: stacktrace };
+
+      {:error, {code, message, _extras}} ->
+        %{ msg: "#{message} (Code #{code})", acc: [] }
+    end
   end
   defbang call(a, b)
 
