@@ -11,8 +11,10 @@ defmodule CQEx.Client do
   defdelegate new(a),          to: CQErl, as: :new_client
   defdelegate new(a, b),       to: CQErl, as: :new_client
 
-  def close(client) do 
-    client |> CQEx.Client.get |> CQErl.close_client
+  def close(client) do
+    client
+    |> CQEx.Client.get
+    |> CQErl.close_client
   end
 
   defbang new
