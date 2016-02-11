@@ -34,11 +34,11 @@ defmodule CQEx do
     counter:  2
   }
 
-  def consistency do
+  defmacro consistency do
     @consistencies
   end
 
-  def batch_mode do
+  defmacro batch_mode do
     @batch_modes
   end
 end
