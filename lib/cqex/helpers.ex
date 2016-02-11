@@ -26,8 +26,8 @@ defmodule CQEx.Helpers do
           :ok -> :ok
           nil -> nil
           { :ok, result } -> result
-          { :error, reason } -> raise CQEx.Bang, msg: reason, acc: unquote(args)
-          %{msg: msg, acc: acc}=err -> raise CQEx.Bang, msg: msg, acc: acc
+          { :error, reason } -> raise CQEx.Error, msg: reason, acc: unquote(args)
+          %{msg: msg, acc: acc}=err -> raise CQEx.Error, msg: msg, acc: acc
         end
       end
     end
