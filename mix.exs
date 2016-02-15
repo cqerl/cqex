@@ -21,7 +21,7 @@ defmodule CQEx.Mixfile do
   end
 
   defp deps do
-    [{ :cqerl, github: "matehat/cqerl", tag: "v0.8.2" }]
+    [{ :cqerl, github: "matehat/cqerl", tag: "v0.9.0" }]
   end
 
   defp description do
