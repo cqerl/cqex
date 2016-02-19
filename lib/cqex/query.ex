@@ -13,12 +13,6 @@ defmodule CQEx.Query do
     end
   end
 
-  defmodule Sigil do
-    def sigil_q(statement, _modifiers) do
-      %CQEx.Query{statement: statement}
-    end
-  end
-
   @default_consistency 1
 
   defstruct statement: "",
@@ -164,4 +158,11 @@ defmodule CQEx.Query do
   end
   defp nullify(nil, fallback), do: fallback
   defp nullify(other, _fallback), do: other
+
+  defmodule Sigil do
+    def sigil_q(statement, _modifiers) do
+      %CQEx.Query{statement: statement}
+    end
+  end
+
 end
