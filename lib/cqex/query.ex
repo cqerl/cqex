@@ -6,6 +6,12 @@ defmodule CQEx.Query do
 
   alias :cqerl, as: CQErl
 
+  defmodule Sigil do
+    def sigil_q(statement, _modifiers) do
+      %CQEx.Query{statement: statement}
+    end
+  end
+
   @default_consistency 1
 
   defstruct statement: "",
