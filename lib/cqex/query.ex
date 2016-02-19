@@ -6,6 +6,13 @@ defmodule CQEx.Query do
 
   alias :cqerl, as: CQErl
 
+  defmacro __using__(_opts) do
+    quote do
+      import CQEx.Query.Sigil
+      alias CQEx.Query, as: Q
+    end
+  end
+
   defmodule Sigil do
     def sigil_q(statement, _modifiers) do
       %CQEx.Query{statement: statement}

@@ -6,6 +6,12 @@ defmodule CQEx.Result do
 
   defstruct [ record: nil, auto_fetch_more: true ]
 
+  defmacro __using__(_opts) do
+    quote do
+      alias CQEx.Result, as: R
+    end
+  end
+
   alias CQEx.Result, as: Result
   alias :cqerl, as: CQErl
 
