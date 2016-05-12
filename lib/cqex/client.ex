@@ -4,12 +4,9 @@ defmodule CQEx.Client do
 
   alias :cqerl, as: CQErl
 
-  defdelegate prepare(a),      to: CQErl, as: :prepare_client
-  defdelegate prepare(a, b),   to: CQErl, as: :prepare_client
-
-  defdelegate new,             to: CQErl, as: :new_client
-  defdelegate new(a),          to: CQErl, as: :new_client
-  defdelegate new(a, b),       to: CQErl, as: :new_client
+  defdelegate new,             to: CQErl, as: :get_client
+  defdelegate new(a),          to: CQErl, as: :get_client
+  defdelegate new(a, b),       to: CQErl, as: :get_client
 
   def close(client) do
     client

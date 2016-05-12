@@ -1,7 +1,7 @@
 defmodule CQEx.Mixfile do
   use Mix.Project
 
-  @version "0.1.5"
+  @version "0.2.0"
 
   def project do
     [app: :cqex,
@@ -21,7 +21,7 @@ defmodule CQEx.Mixfile do
   end
 
   defp deps do
-    [{ :cqerl, github: "matehat/cqerl", tag: "v0.10.0" }]
+    [{ :cqerl, github: "matehat/cqerl", tag: "v1.0" }]
   end
 
   defp description do
