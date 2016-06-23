@@ -5,10 +5,22 @@ Modern Cassandra driver for Elixir, using [cqerl][1] underneath.
 
 ### Usage examples
 
-Create a transient client connection
+If you're using a single cluster, in your project's config/config.exs:
+
+****
 
 ```elixir
-client = CQEx.Client.new! {}
+use Mix.Config
+
+config :cqerl, 
+  cassandra_nodes: [ "10.0.0.1:9042", "10.0.0.1:9042" ],
+  keyspace: "keyspace"
+```
+
+Then, create a transient client connection
+
+```elixir
+client = CQEx.Client.new!
 ```
 
 Fetch the complete list of users, and creating a list out of it using `Enum`
@@ -70,10 +82,23 @@ for %{ legs: leg_count, name: name, friendly: true } <- Q.call!(client, "SELECT 
 # => [ "dog has four legs" ]
 ```
 
-Close the client
+If you want different clusters, in your project's `config/config.exs`:
 
 ```elixir
-client |> CQEx.Client.close
+use Mix.Config
+
+config :cqerl, 
+  cassandra_clusters: [
+    cluster1: { ["10.0.0.1:9042", "10.0.0.2:9042"], [keyspace: "keyspace1"] },
+    cluster2: { ["10.0.0.1:9042", "10.0.0.2:9042"], [keyspace: "keyspace2"] }
+  ]
+```
+
+Then, in your code
+
+```elixir
+client = CQEx.Client.new! :cluster1
+# etc
 ```
 
 [1]: https://github.com/matehat/cqerl/
