@@ -3,7 +3,7 @@ defmodule CQEx.Helpers do
   @moduledoc "Helper macros"
   defmacro __using__(_opts) do
     quote do
-      import Mongo.Helpers
+      import CQEx.Helpers
     end
   end
 
@@ -32,7 +32,7 @@ defmodule CQEx.Helpers do
             raise CQEx.Error, msg: reason, acc: unquote(args)
 
           %{msg: msg, acc: acc} = err ->
-            reraise CQEx.Error.exception(msg: msg, acc: acc), acc
+            raise CQEx.Error, msg: msg, acc: acc
         end
       end
     end
