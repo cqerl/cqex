@@ -3,6 +3,21 @@ Modern Cassandra driver for Elixir, using [cqerl][1] underneath.
 
 *Under development, so not much documentation for now*
 
+### Installation
+
+Add `cqex` and `cqerl` to your application's mix.deps:
+
+```
+defp deps do
+  [
+    # ...
+    {:cqex, "~> 0.2.0"},
+    {:cqerl, github: "matehat/cqerl", tag: "v1.0"},
+    # ...
+  ]
+end
+```
+
 ### Usage examples
 
 If you're using a single cluster, in your project's config/config.exs:
