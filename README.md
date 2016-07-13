@@ -12,7 +12,7 @@ defp deps do
   [
     # ...
     {:cqex, "~> 0.2.0"},
-    {:cqerl, github: "matehat/cqerl", tag: "v1.0"},
+    {:cqerl, github: "matehat/cqerl"},
     # ...
   ]
 end
