@@ -7,7 +7,7 @@ Modern Cassandra driver for Elixir, using [cqerl][1] underneath.
 
 Add `cqex` and `cqerl` to your application's mix.deps:
 
-```
+```elixir
 defp deps do
   [
     # ...
