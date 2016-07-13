@@ -5,7 +5,7 @@ Modern Cassandra driver for Elixir, using [cqerl][1] underneath.
 
 ### Installation
 
-Add `cqex` and `cqerl` to your application's mix.deps:
+Add `cqex` and `cqerl` to your application's mix.exs:
 
 ```elixir
 defp deps do
