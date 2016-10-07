@@ -8,12 +8,6 @@ Modern Cassandra driver for Elixir, using [cqerl][1] underneath.
 Add `cqex` and `cqerl` to your application's mix.exs:
 
 ```elixir
-def application do
-  [applications: [:cqex]]
-end
-
-# ...
-
 defp deps do
   [
     # ...
@@ -21,6 +15,14 @@ defp deps do
     {:cqerl, github: "matehat/cqerl"},
     # ...
   ]
+end
+```
+
+And update your applications list in the project:
+
+```elixir
+def application do
+  [applications: [:cqex]]
 end
 ```
 
