@@ -18,6 +18,14 @@ defp deps do
 end
 ```
 
+And update your applications list in the project:
+
+```elixir
+def application do
+  [applications: [:cqex]]
+end
+```
+
 ### Usage examples
 
 If you're using a single cluster, in your project's config/config.exs:
