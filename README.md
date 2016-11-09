@@ -36,7 +36,7 @@ If you're using a single cluster, in your project's config/config.exs:
 use Mix.Config
 
 config :cqerl, 
-  cassandra_nodes: [ "10.0.0.1:9042", "10.0.0.1:9042" ],
+  cassandra_nodes: [{"10.0.0.1", 9042}, {"10.0.0.2", 9042}],
   keyspace: "keyspace"
 ```
 
@@ -112,8 +112,8 @@ use Mix.Config
 
 config :cqerl, 
   cassandra_clusters: [
-    cluster1: { ["10.0.0.1:9042", "10.0.0.2:9042"], [keyspace: "keyspace1"] },
-    cluster2: { ["10.0.0.1:9042", "10.0.0.2:9042"], [keyspace: "keyspace2"] }
+    cluster1: { [{"10.0.0.1", 9042}, {"10.0.0.2", 9042}], [keyspace: "keyspace1"] },
+    cluster2: { [{"10.0.0.1", 9042}, {"10.0.0.2", 9042}], [keyspace: "keyspace2"] }
   ]
 ```
 
