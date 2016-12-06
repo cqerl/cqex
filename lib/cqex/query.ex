@@ -56,17 +56,25 @@ defmodule CQEx.Query do
   def call(c, q) do
     client = CQEx.Client.get c
     case q do
+      %CQEx.Query{statement: statement, values: values} when is_binary(statement) ->
+        {{statement, values}, CQErl.run_query(client, convert(q))}
       %CQEx.Query{} ->
         CQErl.run_query client, convert q
       any ->
         CQErl.run_query client, any
     end
     |> case do
+      {_, {:ok, result}} ->
+        {:ok, CQEx.Result.convert(result, client)};
+
       {:ok, result} ->
         {:ok, CQEx.Result.convert(result, client)};
 
       {:error, {:error, {reason, stacktrace}}} ->
         %{ msg: "CQErl processing error: #{reason}", acc: stacktrace };
+
+      {{s, v}, {:error, {code, message, _extras}}} ->
+        %{ msg: "#{message} (Code #{code})\nStatement: #{s}\nValues: #{inspect(v)}", acc: [] }
 
       {:error, {code, message, _extras}} ->
         %{ msg: "#{message} (Code #{code})", acc: [] }
