@@ -193,3 +193,15 @@ defmodule CQEx.Result do
   end
 
 end
+
+defimpl Enumerable, for: CQEx.Result.Empty do
+  def count(result) do
+    {:ok, 0}
+  end
+  def member?(result, row) do
+    {:ok, false}
+  end
+  def reduce(_result, {_, acc}, _fun) do
+    {:done, acc}
+  end
+end
