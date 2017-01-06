@@ -7,10 +7,10 @@ defmodule CQEx.Mixfile do
     [app: :cqex,
      version: @version,
      elixir: "~> 1.0",
-     description: description,
-     package: package,
+     description: description(),
+     package: package(),
      source_url: "https://github.com/matehat/cqex",
-     deps: deps,
+     deps: deps(),
      docs: [extras: ["README.md"], main: "README",
             source_ref: "v#{@version}",
             source_url: "https://github.com/matehat/cqex"]]

@@ -110,18 +110,18 @@ defmodule CQEx.Query do
 
   def put(q = %CQEx.Query{ values: values }, key, value) do
     values = values || []
-    %{ q | values: Dict.put(values, key, value) }
+    %{ q | values: Map.put(values, key, value) }
   end
   def get(%CQEx.Query{ values: values }, key, default \\ nil) do
-    Dict.get((values || []), key, default)
+    Map.get((values || []), key, default)
   end
   def delete(q = %CQEx.Query{ values: values }, key) do
     values = values || []
-    %{ q | values: Dict.delete(values, key) }
+    %{ q | values: Map.delete(values, key) }
   end
   def merge(q = %CQEx.Query{ values: values }, other) do
     values = values || []
-    %{ q | values: Dict.merge(values, other) }
+    %{ q | values: Map.merge(values, other) }
   end
 
   def new do
