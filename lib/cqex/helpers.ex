@@ -15,8 +15,10 @@ defmodule CQEx.Helpers do
   When `new` returns `{:error, reason}`, `new!` raises an exception
   """
   defmacro defbang({ name, _, args }) do
-    unless args |> is_list do
-      args = []
+    args = if args |> is_list do
+      args
+    else
+      []
     end
 
     {:__block__, [], quoted} =
