@@ -1,8 +1,8 @@
-%{"cqerl": {:git, "https://github.com/matehat/cqerl.git", "7168c59c52306f1708446818d9903e8d619e75ac", [tag: "v1.0"]},
+%{"cqerl": {:git, "https://github.com/matehat/cqerl.git", "bc6ae78b03556afc55d3966d0862f87c072bcd82", [tag: "v1.0.1"]},
   "lz4": {:git, "https://github.com/szktty/erlang-lz4.git", "30878eafeff35939052c2cafe17d21c95029d3a1", [tag: "0.2.2"]},
   "pooler": {:git, "https://github.com/seth/pooler.git", "a145451a2f12673b4f55c4657e1b572fc5dc4b8a", [tag: "1.5.0"]},
   "quickrand": {:git, "https://github.com/okeuday/quickrand.git", "3eadabe05bddbffe9e3d5cf17a9384319d8756a1", [tag: "v1.4.0"]},
   "re2": {:git, "https://github.com/tuncer/re2.git", "f312524edff558e1bded4db1b64fbc143459aa13", [tag: "v1.4.0"]},
   "semver": {:git, "https://github.com/nebularis/semver.git", "c7d509f38298ec6594be4efdcd8a8f2322760039", [ref: "c7d509"]},
-  "snappy": {:git, "https://github.com/fdmanana/snappy-erlang-nif.git", "76417d16a8d39e04d66114d8f8a3c75df19474f0", [ref: "76417d"]},
+  "snappy": {:git, "https://github.com/fdmanana/snappy-erlang-nif.git", "c4cd1bb35f3a3a399737d64bd03b479817b90e75", [ref: "c4cd1bb"]},
   "uuid": {:git, "https://github.com/okeuday/uuid.git", "41e4e0edc4fe6291227b3fe74f7c2362f2525b21", [tag: "v1.4.1"]}}

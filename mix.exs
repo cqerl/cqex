@@ -11,6 +11,7 @@ defmodule CQEx.Mixfile do
      package: package(),
      source_url: "https://github.com/matehat/cqex",
      deps: deps(),
+     lockfile: "../../mix.lock",
      docs: [extras: ["README.md"], main: "README",
             source_ref: "v#{@version}",
             source_url: "https://github.com/matehat/cqex"]]
