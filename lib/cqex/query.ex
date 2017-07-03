@@ -16,7 +16,7 @@ defmodule CQEx.Query do
   @default_consistency 1
 
   defstruct statement: "",
-    values: [],
+    values: %{},
     reusable: nil,
     named: false,
     page_size: 100,
@@ -109,18 +109,18 @@ defmodule CQEx.Query do
   end
 
   def put(q = %CQEx.Query{ values: values }, key, value) do
-    values = values || []
+    values = values || %{}
     %{ q | values: Map.put(values, key, value) }
   end
   def get(%CQEx.Query{ values: values }, key, default \\ nil) do
-    Map.get((values || []), key, default)
+    Map.get((values || %{}), key, default)
   end
   def delete(q = %CQEx.Query{ values: values }, key) do
-    values = values || []
+    values = values || %{}
     %{ q | values: Map.delete(values, key) }
   end
   def merge(q = %CQEx.Query{ values: values }, other) do
-    values = values || []
+    values = values || %{}
     %{ q | values: Map.merge(values, other) }
   end
 
