@@ -47,8 +47,8 @@ defmodule CQEx.Result do
   def head(%Result{record: rec}), do: CQErl.head rec
   def head(rec), do: CQErl.head rec
 
-  def head(%Result{record: rec}, Opts), do: nillify CQErl.head rec, Opts
-  def head(rec, Opts), do: nillify CQErl.head rec, Opts
+  def head(%Result{record: rec}, opts), do: nillify CQErl.head rec, opts
+  def head(rec, opts), do: nillify CQErl.head rec, opts
 
   def tail(%Result{record: rec}), do: tail rec
   def tail(rec) do
@@ -64,11 +64,11 @@ defmodule CQEx.Result do
     end
   end
 
-  def all_rows(%Result{record: rec}, Opts) do
-    CQErl.all_rows(rec, Opts) |> Enum.map(&(nillify(&1)))
+  def all_rows(%Result{record: rec}, opts) do
+    CQErl.all_rows(rec, opts) |> Enum.map(&(nillify(&1)))
   end
-  def all_rows(rec, Opts) do
-    CQErl.all_rows(rec, Opts) |> Enum.map(&(nillify(&1)))
+  def all_rows(rec, opts) do
+    CQErl.all_rows(rec, opts) |> Enum.map(&(nillify(&1)))
   end
 
   def all_rows(%Result{record: rec}) do
