@@ -40,32 +40,28 @@ defmodule CQEx do
     def exception(msg: msg, acc: acc), do: %Error{message: inspect(msg), stack: acc}
   end
 
-  @consistencies %{
-    any:            0,
-    one:            1,
-    two:            2,
-    three:          3,
-    quorum:         4,
-    all:            5,
-    local_quorum:   6,
-    each_quorum:    7,
-    serial:         8,
-    local_serial:   9,
-    local_one:      10
-  }
-
-  @batch_modes %{
-    logged:   0,
-    unlogged: 1,
-    counter:  2
-  }
-
   defmacro consistency do
-    @consistencies
+    %{
+      any:            0,
+      one:            1,
+      two:            2,
+      three:          3,
+      quorum:         4,
+      all:            5,
+      local_quorum:   6,
+      each_quorum:    7,
+      serial:         8,
+      local_serial:   9,
+      local_one:      10
+    }
   end
 
   defmacro batch_mode do
-    @batch_modes
+    %{
+      logged:   0,
+      unlogged: 1,
+      counter:  2
+    }
   end
 end
 

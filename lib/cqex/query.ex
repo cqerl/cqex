@@ -4,8 +4,6 @@ defmodule CQEx.Query do
   import CQEx, only: :macros
   import CQEx.Helpers
 
-  alias :cqerl, as: CQErl
-
   defmacro __using__(_opts) do
     quote do
       import CQEx.Query.Sigil
@@ -15,7 +13,8 @@ defmodule CQEx.Query do
 
   @default_consistency 1
 
-  defstruct statement: "",
+  defstruct [
+    statement: "",
     values: %{},
     reusable: nil,
     named: false,
@@ -24,6 +23,7 @@ defmodule CQEx.Query do
     consistency: @default_consistency,
     serial_consistency: nil,
     value_encode_handler: nil
+  ]
 
   def convert(%CQEx.Query{
     :statement => statement,
@@ -54,24 +54,24 @@ defmodule CQEx.Query do
   def convert(res), do: res
 
   def call(c, q) do
-    client = CQEx.Client.get c
+    client = CQEx.Client.get(c)
     case q do
       %CQEx.Query{statement: statement, values: values} when is_binary(statement) ->
-        {{statement, values}, CQErl.run_query(client, convert(q))}
+        {{statement, values}, :cqerl.run_query(client, convert(q))}
       %CQEx.Query{} ->
-        CQErl.run_query client, convert q
+        :cqerl.run_query(client, convert(q))
       any ->
-        CQErl.run_query client, any
+        :cqerl.run_query(client, any)
     end
     |> case do
       {_, {:ok, result}} ->
-        {:ok, CQEx.Result.convert(result, client)};
+        {:ok, CQEx.Result.convert(result, client)}
 
       {:ok, result} ->
-        {:ok, CQEx.Result.convert(result, client)};
+        {:ok, CQEx.Result.convert(result, client)}
 
       {:error, {:error, {reason, stacktrace}}} ->
-        %{ msg: "CQErl processing error: #{reason}", acc: stacktrace };
+        %{ msg: ":cqerl processing error: #{reason}", acc: stacktrace }
 
       {{s, v}, {:error, {code, message, _extras}}} ->
         %{ msg: "#{message} (Code #{code})\nStatement: #{s}\nValues: #{inspect(v)}", acc: [] }
@@ -82,6 +82,7 @@ defmodule CQEx.Query do
   end
   defbang call(a, b)
 
+  require Logger
   def cast(c, q) do
     client = CQEx.Client.get c
     current = self()
@@ -89,9 +90,9 @@ defmodule CQEx.Query do
     spawn_link fn ->
       tag = case q do
         %CQEx.Query{} ->
-          CQErl.send_query client, convert q
+          :cqerl.send_query(client, convert(q))
         any ->
-          CQErl.send_query client, any
+          :cqerl.send_query(client, any)
       end
       send current, {:tag, tag}
 
@@ -124,7 +125,7 @@ defmodule CQEx.Query do
     %{ q | values: Map.merge(values, other) }
   end
 
-  def new do
+  def new() do
     %CQEx.Query{}
   end
 
@@ -172,5 +173,4 @@ defmodule CQEx.Query do
       %CQEx.Query{statement: statement}
     end
   end
-
 end

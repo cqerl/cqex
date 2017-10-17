@@ -135,7 +135,7 @@ defmodule CQEx.Result do
 
   def fetch(result, index) do
     case Enum.at(result, index) do
-      nil -> :error;
+      nil -> :error
       row -> { :ok, row }
     end
   end
@@ -175,7 +175,7 @@ defmodule CQEx.Result do
     defp maybe_fetch_and_continue(result, acc, fun) do
       case R.has_more_pages?(result) do
         true ->
-          next_page = result |> R.fetch_more!
+          next_page = R.fetch_more!(result)
           case R.next(next_page) do
             {h, t} -> reduce t, fun.(h, acc), fun
             :empty_dataset -> {:done, acc}
