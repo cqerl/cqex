@@ -122,8 +122,8 @@ defmodule CQEx.Query do
   def get(query, key, default \\ nil)
   def get(%CQEx.Query{ values: nil }, _, default) do
     default
-  def get(%CQEx.Query{ values: values }, key, default) when is_map(values) do
   end
+  def get(%CQEx.Query{ values: values }, key, default) when is_map(values) do
     Map.get(values, key, default)
   end
   def get(%CQEx.Query{ values: values }, key, default) when is_list(values) do
@@ -147,8 +147,8 @@ defmodule CQEx.Query do
   end
   def merge(q = %CQEx.Query{}, %{ __struct__: _ } = other) do
     merge(q, Map.delete(other, :__struct__))
-  def merge(q = %CQEx.Query{ values: values }, other) when is_map(values) and is_list(other) do
   end
+  def merge(q = %CQEx.Query{ values: values }, other) when is_map(values) and is_list(other) do
     merge(q, Map.new(other))
   end
   def merge(q = %CQEx.Query{ values: values }, other) when is_map(values) do
@@ -179,7 +179,6 @@ defmodule CQEx.Query do
     %{ q | serial_consistency: serial_consistency }
   end
 
-  defp nullify(rec), do: nullify(rec, :null)
   defp nullify(rec, fallback) when is_map(rec) do
     rec
     |> Enum.map(fn
