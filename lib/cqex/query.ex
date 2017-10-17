@@ -38,7 +38,7 @@ defmodule CQEx.Query do
     }) do
     cql_query(
       statement: statement,
-      values: nullify(values, :undefined),
+      values: nullify(values, :null),
       reusable: nullify(reusable, :undefined),
       named: nullify(named, :undefined),
       page_size: nullify(page_size, :undefined),
@@ -49,7 +49,7 @@ defmodule CQEx.Query do
     )
   end
   def convert(q) when Record.is_record(q, :cql_query) do
-    [{:__struct__, CQEx.Query} | cql_query(q)] |> Enum.into(%{})
+    Enum.into([{:__struct__, CQEx.Query} | cql_query(q)], %{})
   end
   def convert(res), do: res
 
@@ -183,23 +183,23 @@ defmodule CQEx.Query do
   defp nullify(rec, fallback) when is_map(rec) do
     rec
     |> Enum.map(fn
-      {key, nil} -> {key, fallback};
-      {key, other} -> {key, nullify(other)}
+      {key, nil} -> {key, fallback}
+      {key, other} -> {key, nullify(other, fallback)}
     end)
     |> Enum.into(%{})
   end
   defp nullify(list = [{_key, _value} | _rest], fallback) do
     list
     |> Enum.map(fn
-      {key, nil} -> {key, fallback};
-      {key, other} -> {key, nullify(other)}
+      {key, nil} -> {key, fallback}
+      {key, other} -> {key, nullify(other, fallback)}
     end)
   end
   defp nullify(list = [_value | _rest], fallback) do
     list
     |> Enum.map(fn
-      nil -> fallback;
-      other -> other
+      nil -> fallback
+      other -> nullify(other, fallback)
     end)
   end
   defp nullify(nil, fallback), do: fallback

@@ -111,7 +111,8 @@ defmodule CQEx.Result do
   defp nillify(rec) when is_map(rec) do
     rec
     |> Enum.map(fn
-      {key, :null} -> {key, nil};
+      {key, :undefined} -> {key, nil}
+      {key, :null} -> {key, nil}
       {key, other} -> {key, nillify(other)}
     end)
     |> Enum.into(%{})
@@ -119,17 +120,20 @@ defmodule CQEx.Result do
   defp nillify(list = [{_key, _value} | _rest]) do
     list
     |> Enum.map(fn
-      {key, :null} -> {key, nil};
+      {key, :undefined} -> {key, nil}
+      {key, :null} -> {key, nil}
       {key, other} -> {key, nillify(other)}
     end)
   end
   defp nillify(list = [_value | _rest]) do
     list
     |> Enum.map(fn
-      :null -> nil;
+      :undefined -> nil
+      :null -> nil
       other -> other
     end)
   end
+  defp nillify(:undefined), do: nil
   defp nillify(:null), do: nil
   defp nillify(other), do: other
 
