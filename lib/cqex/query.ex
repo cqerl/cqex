@@ -109,20 +109,57 @@ defmodule CQEx.Query do
     end
   end
 
-  def put(q = %CQEx.Query{ values: values }, key, value) do
-    values = values || %{}
+  def put(q = %CQEx.Query{ values: nil }) do
+    put(%{q | values: %{}})
+  end
+  def put(q = %CQEx.Query{ values: values }, key, value) when is_map(values) do
     %{ q | values: Map.put(values, key, value) }
   end
-  def get(%CQEx.Query{ values: values }, key, default \\ nil) do
-    Map.get((values || %{}), key, default)
+  def put(q = %CQEx.Query{ values: values }, key, value) when is_list(values) do
+    %{ q | values: Keyword.put(values, key, value) }
   end
-  def delete(q = %CQEx.Query{ values: values }, key) do
+
+  def get(query, key, default \\ nil)
+  def get(%CQEx.Query{ values: nil }, _, default) do
+    default
+  def get(%CQEx.Query{ values: values }, key, default) when is_map(values) do
+  end
+    Map.get(values, key, default)
+  end
+  def get(%CQEx.Query{ values: values }, key, default) when is_list(values) do
+    Keyword.get(values, key, default)
+  end
+
+  def delete(q = %CQEx.Query{ values: nil }, _key) do
+    q
+  end
+  def delete(q = %CQEx.Query{ values: values }, key) when is_map(values) do
     values = values || %{}
     %{ q | values: Map.delete(values, key) }
   end
-  def merge(q = %CQEx.Query{ values: values }, other) do
+  def delete(q = %CQEx.Query{ values: values }, key) when is_list(values) do
+    values = values || []
+    %{ q | values: Keyword.delete(values, key) }
+  end
+
+  def merge(q = %CQEx.Query{ values: nil }, other) when is_map(other) or is_list(other) do
+    merge(%{q | values: other}, other)
+  end
+  def merge(q = %CQEx.Query{}, %{ __struct__: _ } = other) do
+    merge(q, Map.delete(other, :__struct__))
+  def merge(q = %CQEx.Query{ values: values }, other) when is_map(values) and is_list(other) do
+  end
+    merge(q, Map.new(other))
+  end
+  def merge(q = %CQEx.Query{ values: values }, other) when is_map(values) do
     values = values || %{}
     %{ q | values: Map.merge(values, other) }
+  end
+  def merge(q = %CQEx.Query{ values: values }, other) when is_list(values) and is_map(other) do
+    merge(q, Enum.to_list(other))
+  end
+  def merge(q = %CQEx.Query{ values: values }, other) when is_list(values) do
+    %{ q | values: Keyword.merge(values, other) }
   end
 
   def new() do
