@@ -44,8 +44,8 @@ defmodule CQEx.Result do
   def size(%Result{record: rec}), do: CQErl.size rec
   def size(rec), do: CQErl.size rec
 
-  def head(%Result{record: rec}), do: CQErl.head rec
-  def head(rec), do: CQErl.head rec
+  def head(%Result{record: rec}), do: nillify CQErl.head rec
+  def head(rec), do: nillify CQErl.head rec
 
   def head(%Result{record: rec}, opts), do: nillify CQErl.head rec, opts
   def head(rec, opts), do: nillify CQErl.head rec, opts
