@@ -21,7 +21,7 @@ defmodule CQEx.Mixfile do
   end
 
   defp deps do
-    [{ :cqerl, "1.1.1" }]
+    [{ :cqerl, "~> 1.1.1" }]
   end
 
   defp description do
