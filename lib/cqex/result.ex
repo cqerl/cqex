@@ -8,6 +8,11 @@ defmodule CQEx.Result do
 
   defstruct record: nil, auto_fetch_more: true
 
+  @type t() :: %__MODULE__{
+          record: CQEx.cql_result() | nil,
+          auto_fetch_more: boolean()
+        }
+
   defmacro __using__(_opts) do
     quote do
       alias CQEx.Result, as: R
@@ -23,12 +28,25 @@ defmodule CQEx.Result do
               name: nil,
               args: nil,
               client: nil
+
+    @type t() :: %__MODULE__{
+            change_type: atom(),
+            target: atom(),
+            keyspace: String.t(),
+            name: String.t(),
+            args: [String.t()],
+            client: :cqerl.client() | nil
+          }
   end
 
   defmodule Empty do
     @moduledoc false
 
     defstruct client: nil
+
+    @type t() :: %__MODULE__{
+            client: :cqerl.client() | nil
+          }
   end
 
   @spec(

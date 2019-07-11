@@ -26,6 +26,18 @@ defmodule CQEx.Query do
             serial_consistency: nil,
             value_encode_handler: nil
 
+  @type t() :: %__MODULE__{
+          statement: String.t(),
+          values: map(),
+          reusable: nil | boolean(),
+          reusable: boolean(),
+          page_size: non_neg_integer(),
+          page_state: binary() | nil,
+          consistency: CQEx.consistency_values(),
+          serial_consistency: CQEx.serial_consistency_values() | nil,
+          value_encode_handler: fun() | nil
+        }
+
   @spec(
     convert(CQEx.Query.t()) :: CQEx.cql_query(),
     convert(CQEx.cql_query()) :: CQEx.Query.t()
