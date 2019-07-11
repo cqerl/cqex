@@ -69,11 +69,11 @@ defmodule CQEx.Result do
   def size(%Result{record: rec}), do: CQErl.size(rec)
   def size(rec), do: CQErl.size(rec)
 
-  @spec head(CQEx.cql_result() | CQEx.Result.t()) :: Keyword.t() | Map.t()
-  def head(%Result{record: rec}), do: CQErl.head(rec)
-  def head(rec), do: CQErl.head(rec)
+  @spec head(CQEx.cql_result() | CQEx.Result.t()) :: Keyword.t() | map()
+  def head(%Result{record: rec}), do: nillify(CQErl.head(rec))
+  def head(rec), do: nillify(CQErl.head(rec))
 
-  @spec head(CQEx.cql_result() | CQEx.Result.t(), Keyword.t()) :: Keyword.t() | Map.t()
+  @spec head(CQEx.cql_result() | CQEx.Result.t(), Keyword.t()) :: Keyword.t() | map()
   def head(%Result{record: rec}, opts), do: nillify(CQErl.head(rec, opts))
   def head(rec, opts), do: nillify(CQErl.head(rec, opts))
 
@@ -86,7 +86,7 @@ defmodule CQEx.Result do
   end
 
   @spec next(CQEx.cql_result() | CQEx.Result.t()) ::
-          :empty_dataset | {Keyword.t() | Map.t(), CQEx.Result.t()}
+          :empty_dataset | {Keyword.t() | map(), CQEx.Result.t()}
   def next(%Result{record: rec}), do: next(rec)
 
   def next(rec) do
@@ -99,7 +99,7 @@ defmodule CQEx.Result do
     end
   end
 
-  @spec all_rows(CQEx.cql_result() | CQEx.Result.t(), Keyword.t()) :: [Keyword.t() | Map.t()]
+  @spec all_rows(CQEx.cql_result() | CQEx.Result.t(), Keyword.t()) :: [Keyword.t() | map()]
   def all_rows(%Result{record: rec}, opts) do
     CQErl.all_rows(rec, opts) |> Enum.map(&nillify(&1))
   end
@@ -108,7 +108,7 @@ defmodule CQEx.Result do
     CQErl.all_rows(rec, opts) |> Enum.map(&nillify(&1))
   end
 
-  @spec all_rows(CQEx.cql_result() | CQEx.Result.t()) :: [Keyword.t() | Map.t()]
+  @spec all_rows(CQEx.cql_result() | CQEx.Result.t()) :: [Keyword.t() | map()]
   def all_rows(%Result{record: rec}) do
     CQErl.all_rows(rec) |> Enum.map(&nillify(&1))
   end

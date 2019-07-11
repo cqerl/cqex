@@ -196,7 +196,7 @@ defmodule CQEx.Query do
     %{q | values: Keyword.delete(values, key)}
   end
 
-  @spec merge(CQEx.Query.t(), Keyword.t() | Map.t()) :: CQEx.Query.t()
+  @spec merge(CQEx.Query.t(), Keyword.t() | map()) :: CQEx.Query.t()
   def merge(q = %CQEx.Query{values: nil}, other) when is_map(other) or is_list(other) do
     merge(%{q | values: other}, other)
   end

@@ -51,7 +51,7 @@ defmodule CQEx do
   )
 
   @type cql_query ::
-          {:cql_query, iodata(), Keyword.t() | Map.t(), boolean | :undefined, boolean, integer,
+          {:cql_query, iodata(), Keyword.t() | map(), boolean | :undefined, boolean, integer,
            :undefined | binary, consistency_values(), serial_consistency_values(),
            :undefined | fun}
 
