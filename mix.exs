@@ -30,7 +30,8 @@ defmodule CQEx.Mixfile do
   defp deps do
     [
       {:cqerl, "~> 2.0.0"},
-      {:dialyxir, "~> 0.5", only: [:dev], runtime: false}
+      {:dialyxir, "~> 0.5", only: :dev, runtime: false},
+      {:ex_doc, ">= 0.0.0", only: :dev, runtime: false}
     ]
   end
 
