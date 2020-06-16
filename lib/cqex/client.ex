@@ -14,13 +14,6 @@ defmodule CQEx.Client do
           | CQEx.Result.SchemaChanged.t()
           | CQEx.Result.Empty.t()
 
-  @spec close(client_value) :: :ok
-  def close(client) do
-    client
-    |> CQEx.Client.get()
-    |> :cqerl.close_client()
-  end
-
   @spec new! :: :cqerl.client()
   def new!() do
     case new() do
