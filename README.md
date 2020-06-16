@@ -9,7 +9,7 @@ Add `cqex` to your application's mix.exs:
 defp deps do
   [
     # ...
-    {:cqex, "~> 0.2.0"},
+    {:cqex, "~> 1.0.0"},
     # ...
   ]
 end
