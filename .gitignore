@@ -3,3 +3,5 @@
 erl_crash.dump
 *.ez
 .DS_Store
+/.elixir_ls
+/.mix_tasks

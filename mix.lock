@@ -1,8 +1,11 @@
-%{"cqerl": {:git, "https://github.com/matehat/cqerl.git", "80111c6a7ea73af508ba826ff06c6b8f33653869", [tag: "v1.0.8"]},
-  "lz4": {:git, "https://github.com/szktty/erlang-lz4.git", "6bc5efe93bab327788bcde24374f16044b549dd8", [ref: "6bc5efe93bab327788bcde24374f16044b549dd8"]},
-  "pooler": {:hex, :pooler, "1.5.3", "898cd1fa301fc42d4a8ed598ce139b71ca85b54c16ab161152b5cc5fbdcfa1a8", [:rebar3], []},
-  "quickrand": {:hex, :quickrand, "1.7.2", "e856f3c69fec00d1acca8e56cb452b650e838d3a9720811410f439121efafe59", [:rebar3], []},
-  "re2": {:git, "https://github.com/tuncer/re2.git", "2471e06ed7e548ca1af522e95b16867135afdfdc", [tag: "v1.7.5"]},
-  "semver": {:git, "https://github.com/nebularis/semver.git", "c7d509f38298ec6594be4efdcd8a8f2322760039", [ref: "c7d509"]},
-  "snappy": {:git, "https://github.com/fdmanana/snappy-erlang-nif.git", "4e3b8611b6a1ff85a417b0f2fad8886c9485810e", [ref: "4e3b861"]},
-  "uuid": {:hex, :uuid_erl, "1.7.2", "d596c8dd01a4ae48b9d8d51832ccc8f8302bf67acd01336aec3fcfae6b9d2bc2", [:rebar3], [{:quickrand, "~> 1.7.2", [hex: :quickrand, optional: false]}]}}
+%{
+  "cqerl": {:hex, :cqerl, "2.0.0", "f80f3ad74783725e99b35e2a1bd2d112f5623982f38f8dce14bd9c2b4f2c49a3", [:rebar3], [{:lz4, "~>0.2.4", [hex: :lz4_erl, repo: "hexpm", optional: false]}, {:pooler, "~>1.5.3", [hex: :pooler, repo: "hexpm", optional: false]}, {:re2, "1.9.5", [hex: :re2, repo: "hexpm", optional: false]}, {:semver, "~>0.0.1", [hex: :semver_erl, repo: "hexpm", optional: false]}, {:snappyer, "1.2.6", [hex: :snappyer, repo: "hexpm", optional: false]}, {:uuid, "~>2.0.0", [hex: :uuid_erl, repo: "hexpm", optional: false]}], "hexpm", "3bec17d06e16bb820f0af2bcca4077823de76bd311d7f25ecfee4c495713ec24"},
+  "dialyxir": {:hex, :dialyxir, "0.5.1", "b331b091720fd93e878137add264bac4f644e1ddae07a70bf7062c7862c4b952", [:mix], [], "hexpm", "6c32a70ed5d452c6650916555b1f96c79af5fc4bf286997f8b15f213de786f73"},
+  "lz4": {:hex, :lz4_erl, "0.2.4", "fafc1fa39ed1d034893316852daebedd82f37df478446224ac096490be3b4a4d", [:rebar3], [], "hexpm", "e3eb9e2b5c1e4dab39db8fe0421e6fa10f9bf5843f20dab43518f8ab8e812517"},
+  "pooler": {:hex, :pooler, "1.5.3", "898cd1fa301fc42d4a8ed598ce139b71ca85b54c16ab161152b5cc5fbdcfa1a8", [:rebar3], [], "hexpm", "058d85c5081289b90e97e4dddbc3bb5a3b4a19a728ab3bc88c689efcc36a07c7"},
+  "quickrand": {:hex, :quickrand, "2.0.0", "665c49881808da68a5c58ddeda16ea60b16be54dbb719b029eea5835fd12dae9", [:rebar3], [], "hexpm", "0344d02b40bc44b3e8e8a3dbd89a3b29e5690bc44811149ee704ac3a695a29e3"},
+  "re2": {:hex, :re2, "1.9.5", "3c419527fb2cc75eda1657f04dc7e8cea9864899b43ff6cc3250fa7525431e83", [:rebar3], [], "hexpm", "4861336271ac565224e79e133cbaf90af77739cda3fff25f6965b24a1146a4d6"},
+  "semver": {:hex, :semver_erl, "0.0.1", "e1dc99fb20ff071b240a0280611faba93eeb9c2adfb02a15e20a06a9f13dfff4", [:rebar3], [], "hexpm", "adf1cb935eeb2472b4b7bb8116c678c1077ae4cd5bdfe90010b765aecce5753b"},
+  "snappyer": {:hex, :snappyer, "1.2.6", "34181e3233f68a92044e176fe96e54fee7957acc2be554f0460d799c495166c2", [:rebar3], [], "hexpm", "d538d1e8892af09dc8b2771b2652c9d70f009cd1556246b3e22706df643f47b4"},
+  "uuid": {:hex, :uuid_erl, "2.0.0", "02c713fac0e73e5f366cba541216f1e956e2f00c91c7530d4b21dec7d3ada164", [:rebar3], [{:quickrand, "~> 2.0.0", [hex: :quickrand, repo: "hexpm", optional: false]}], "hexpm", "ce1c1ed1d786ba98f93204be66f93a797504993954141122fcc5fe59b5331367"},
+}
