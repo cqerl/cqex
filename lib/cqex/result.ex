@@ -250,7 +250,7 @@ defmodule CQEx.Result do
 
           case R.next(next_page) do
             {h, t} -> reduce(t, fun.(h, acc), fun)
-            :empty_dataset -> {:done, acc}
+            :empty_dataset -> reduce(next_page, {:cont, acc}, fun)
           end
 
         false ->
