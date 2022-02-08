@@ -247,11 +247,7 @@ defmodule CQEx.Result do
       case R.has_more_pages?(result) do
         true ->
           next_page = R.fetch_more!(result)
-
-          case R.next(next_page) do
-            {h, t} -> reduce(t, fun.(h, acc), fun)
-            :empty_dataset -> {:done, acc}
-          end
+          reduce(next_page, {:cont, acc}, fun)
 
         false ->
           {:done, acc}
