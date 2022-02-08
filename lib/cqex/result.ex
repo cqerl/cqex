@@ -247,23 +247,13 @@ defmodule CQEx.Result do
       case R.has_more_pages?(result) do
         true ->
           next_page = R.fetch_more!(result)
-
-          case R.next(next_page) do
-            {h, t} -> reduce(t, fun.(h, acc), fun)
-            # Note: We cannot return {:done, _} here. See https://github.com/cqerl/cqex/pull/35
-            # (We have to recurse because ALLOW FILTERING queries can have empty pages then
-            # non-empty pages containing results afterwards. has_more_pages? tells us whether
-            # there are more pages.)
-            :empty_dataset -> reduce(next_page, {:cont, acc}, fun)
-          end
+          reduce(next_page, {:cont, acc}, fun)
 
         false ->
           {:done, acc}
       end
     end
 
-    # TODO will not work with ALLOW FILTERING well. See https://github.com/cqerl/cqex/pull/35 and
-    # related comment above
     defp find(:empty_dataset, _row), do: false
     defp find({row2, _tail}, row) when row == row2, do: true
 
