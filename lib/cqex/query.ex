@@ -101,6 +101,10 @@ defmodule CQEx.Query do
         {:error,
          %{msg: "#{message} (Code #{code})\nStatement: #{s}\nValues: #{inspect(v)}", acc: []}}
 
+      {{s, v}, {:error, e}} ->
+        {:error,
+         %{msg: "#{inspect(e)} \nStatement: #{s}\nValues: #{inspect(v)}", acc: []}}
+
       {:error, {code, message, _extras}} ->
         {:error, %{msg: "#{message} (Code #{code})", acc: []}}
     end
